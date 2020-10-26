@@ -514,10 +514,14 @@ namespace DamageInfoPlugin
                             {
                                 string existingText = "";
                                 if (text1 != IntPtr.Zero)
-                                    existingText = Marshal.PtrToStringAnsi(text1);
+                                {
+                                    existingText = Marshal.PtrToStringUni(text1);
+                                    existingText = Encoding.UTF8.GetString(Encoding.Unicode.GetBytes(existingText));
+                                }
 
                                 string combined = $"from {name} {existingText}";
-                                text1 = Marshal.StringToHGlobalAnsi(combined);
+                                combined = Encoding.Unicode.GetString(Encoding.UTF8.GetBytes(combined));
+                                text1 = Marshal.StringToHGlobalUni(combined);
                                 text.Enqueue(new Tuple<IntPtr, long>(text1, Ms()));
                             }
                         }
